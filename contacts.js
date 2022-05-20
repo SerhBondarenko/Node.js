@@ -1,11 +1,9 @@
 const shortid = require('shortid');
-
-const path = require("path");
-const fs =require("fs/promises")
-
-const contactsPath = path.resolve("./db/contacts.json");
+const path = require('path');
+const fs = require('fs/promises');
 
 
+const contactsPath = path.join(__dirname + '/db/contacts.json');
 
 const  listContacts=async() =>{
   const dataString=await fs.readFile(contactsPath, 'utf-8' )
@@ -19,12 +17,12 @@ return data
    return contacts?contacts:null;
 }
   
- const  removeContact  = async (contactId) =>  {
-    const contacts = await listContacts();
-    const FilteredContacts = contacts.filter(contact => contact.id !== contactId);
-    const newContactsList = await fs.writeFile(contactsPath,  JSON.stringify(FilteredContacts));
-    return newContactsList
-  }
+const removeContact=async(contactId) =>{
+  const contacts = await listContacts();
+  const filtrContacts = contacts.filter(el => el.id != contactId);
+    await fs.writeFile(contactsPath, JSON.stringify(filtrContacts));
+    return filtrContacts;
+}
   
   const  addContact=async(name, email, phone) =>{
     const contacts = await listContacts();
